@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite has no native enum support in Prisma, so Role/UserStatus/BoardType
+// are stored as strings and constrained in application code:
+//   Role: "USER" | "ADMIN"
+//   UserStatus: "PENDING" | "APPROVED" | "REJECTED"
+//   BoardType: "FREE" | "NOTICE"
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  email      String   @unique
+  password   String
+  name       String
+  department String?
+  role       String   @default("USER")
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+  posts      Post[]
+  photos     Photo[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  boardType String
+  title     String
+  content   String
+  viewCount Int      @default(0)
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Photo {
+  id           Int      @id @default(autoincrement())
+  title        String?
+  originalPath String
+  resizedPath  String
+  thumbPath    String
+  width        Int
+  height       Int
+  uploaderId   Int
+  uploader     User     @relation(fields: [uploaderId], references: [id])
+  createdAt    DateTime @default(now())
+}
