@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "사내 게시판",
+    "slug": "internal-webview-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "extra": {
+      "serverUrl": "https://your-internal-server.example.com"
+    },
+    "android": {
+      "package": "com.yourcompany.internalapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.yourcompany.internalapp"
+    }
+  }
+}
